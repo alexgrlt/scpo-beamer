@@ -1,0 +1,825 @@
+/* ============================================================
+   ScPo revealjs (Quarto)
+   Layout adapted from ScPoEconometrics-Slides
+   https://github.com/ScPoEcon/ScPoEconometrics-Slides (CC BY-SA 4.0)
+   ============================================================ */
+
+:root {
+  --scpo-red:       #d90502;
+  --scpo-grey:      #515151;
+  --scpo-dark:      #353632;
+  --scpo-blue:      #0729a6;
+  --scpo-lightgrey: #818181;
+  --forestgreen:    #228b22;
+  --color-question: #F2A541;
+
+  --slide-font-size: 1.75em;
+  --slide-pad-left:  0;
+
+  /* Asset logo haut */
+  --title-logo-url: url("../logos/ScPo-econ.png");
+  
+
+  /* ===== Logo haut-gauche : ajustez ces deux variables ===== */
+  --title-logo-height:      120px;  /* hauteur du bloc logo              */
+  --title-logo-margin-left: 0px;   /* distance depuis la gauche         */
+
+  /* ===== Footer (logo bas via YAML  footer: <div class="my-footer">…) =====
+     Exemples de positions courantes :
+       Centré         →  --footer-left: 50%;   --footer-transform: translateX(-50%);
+       Collé à gauche →  --footer-left: 20px;  --footer-transform: none;
+       Collé à droite →  changez "left" par "right" dans la règle .my-footer ci-dessous
+  */
+  --footer-bottom:    8px;
+  --footer-left:      50%;
+  --footer-transform: translateX(-50%);
+
+  --title-content-y:    190px;
+  --footnote-font-size: 85%;
+}
+
+/* ============================================================
+   1) Never break reveal layout
+   ============================================================ */
+.reveal {
+  font-size: var(--slide-font-size);
+  color: var(--scpo-dark);
+}
+.reveal,
+.reveal * { box-sizing: border-box; }
+
+/* ============================================================
+   2) Stack-safe backgrounds (no bleed)
+   ============================================================ */
+.reveal .slides section.stack {
+  background:       transparent !important;
+  background-image: none !important;
+}
+.reveal .slides section:not(.stack) {
+  background-color:    #fff;
+  background-image:    none;
+  background-repeat:   no-repeat;
+  background-position: center;
+  background-size:     cover;
+}
+.reveal .slides section.stack > section {
+  background-color: #fff;
+  background-image: none;
+}
+
+/* ============================================================
+   3) Baseline slide styling
+   ============================================================ */
+.reveal .slides section:not(#title-slide):not(.title-slide-section-red):not(.title-slide-section-grey) {
+  text-align:   left;
+  padding-left: var(--slide-pad-left);
+}
+
+.reveal .slides section .slide-content {
+  padding-left: inherit;
+  font-size:    inherit;
+}
+
+.reveal h1 { color: var(--scpo-red);  }
+.reveal h2 { color: var(--scpo-grey); }
+.reveal h3 { color: var(--scpo-grey); }
+
+.reveal ul,
+.reveal ol { margin-top: 0.4em; }
+.reveal li  { margin: 0.25em 0; }
+
+.reveal a,
+.reveal a > code {
+  color:           var(--scpo-red);
+  text-decoration: none;
+}
+.reveal a:hover { text-decoration: underline; }
+
+.reveal pre { margin: 0 0 0.3em 0; }
+/* font-family pour pre/code definie dans scpo-fonts.css */
+
+.reveal video,
+.reveal iframe { max-width: 100%; }
+
+/* ============================================================
+   Images : figure wrapper
+   ============================================================ */
+.reveal .slides section figure {
+  display:    block;
+  position:   relative;
+  max-width:  100vw !important;
+  max-height: 70vh  !important;
+  width:      70vw  !important;
+  height:     auto  !important;
+}
+
+.reveal .slides section img.inline {
+  display: inline !important;
+  vertical-align: middle !important;
+  height: 1em !important;
+  width: auto !important;
+  max-width: none !important;
+  max-height: none !important;
+  position: static !important;
+}
+
+/* ============================================================
+   Images : base commune + classes utilitaires
+   ============================================================ */
+.reveal .slides section img {
+  display:    flex;
+  position:   relative;
+  max-width:  100vw !important;
+  max-height: 70vh  !important;
+  width:      auto  !important;
+  height:     auto  !important;
+  justify-content: center; 
+  align-items: center
+}
+
+.reveal img {
+  justify-content: center; 
+  align-items: center
+}
+
+.reveal .slides section img.vw50,
+.reveal .slides section img.vw60,
+.reveal .slides section img.vw70,
+.reveal .slides section img.vw90,
+.reveal .slides section img.vh70 {
+  max-width:     none !important;
+  display:       block !important;
+  position:      relative !important;
+  margin-inline: auto;
+}
+
+.reveal .slides section img.vw50 { width: 50vw !important; max-height: 70vh; }
+.reveal .slides section img.vw60 { width: 60vw !important; max-height: none; }
+.reveal .slides section img.vw70 { width: 70vw !important; max-height: none; }
+.reveal .slides section img.vw90 { width: 90vw !important; max-height: none; }
+.reveal .slides section img.vh70 { height: 70vh !important; width: auto !important; }
+
+.reveal .slides section img.col {
+  display: block;
+  position: relative;
+  max-width: 100% !important;
+  max-height: 70% !important;
+  width: auto !important;
+  height: auto !important;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Grille 2x2 : sélecteur plus spécifique que .reveal .slides section img */
+.reveal .slides section .grille-4 img {
+  display:    block !important;
+  max-width:  100%  !important;   /* ne dépasse pas sa colonne */
+  max-height: 400px !important;   /* ≈ (700 - titre - lien) / 2 */
+  width:      auto  !important;
+  height:     auto  !important;
+  margin:     0 auto !important;
+}
+
+.reveal .slides section .grille-4 figure,
+.reveal .slides section .grille-4 .quarto-figure,
+.reveal .slides section .grille-4 p {
+  margin:  0 !important;
+  padding: 0 !important;
+}
+
+/* ── Figure conteneur ── */
+.reveal .slides section figure:has(img.col-center) {
+  display:        flex          !important;
+  flex-direction: column        !important;
+  align-items:    center        !important;   /* centre l'img dans le figure */
+  width:          100%          !important;
+  margin-inline:  auto          !important;
+}
+
+/* ── L'image elle-même ── */
+.reveal .slides section figure:has(img.col-center) img.col-center,
+.reveal .slides section img.col-center {
+  display:        block         !important;
+  width:          80%           !important;
+  max-width:      100%          !important;
+  height:         auto          !important;
+  max-height:     50vh          !important;
+  margin-inline:  auto          !important;   /* fallback si pas de figure */
+}
+
+/* ── Légende ── */
+.reveal .slides section figure:has(img.col-center) figcaption {
+  text-align: center  !important;
+  margin-top: 0.5em   !important;
+}
+
+/* ==========================================================================
+   ── IMAGE ANCRÉE DANS LE COIN INFÉRIEUR DROIT (TAILLES AJUSTÉES) ──
+   ========================================================================== */
+
+/* ── 1. COMPORTEMENT À L'ÉCRAN (Mode Présentation standard) ── */
+@media screen {
+  
+  /* Le conteneur (figure) */
+  .reveal .slides section figure:has(img.corner-br),
+  .reveal .slides section figure:has(img.corner-br-lg) {
+    display:        flex           !important;
+    flex-direction: column         !important;
+    align-items:    center         !important; 
+    width:          max-content    !important;
+    padding:        0.5rem         !important;
+    margin:         0              !important;
+    z-index:        10             !important;
+    position:       fixed          !important; 
+    bottom:         0              !important;
+    right:          0              !important;
+    transform:      none           !important;
+  }
+
+  /* L'image STANDARD (Agrandie) */
+  .reveal .slides section figure:has(img.corner-br) img {
+    display:    block      !important;
+    position:   static     !important;
+    order:      2          !important; 
+    width:      auto       !important; /* ◄── Laisse l'image respirer */
+    height:     auto       !important; /* ◄── Laisse l'image respirer */
+    max-width:  18vw       !important; /* ◄── Augmenté (ex: 18% de la largeur écran) */
+    max-height: 16vh       !important; /* ◄── Augmenté (ex: 16% de la hauteur écran) */
+    margin:     0 auto     !important; 
+    transform:  none       !important;
+  }
+
+  /* L'image LARGE (LG) (Correction du conflit de taille) */
+  .reveal .slides section figure:has(img.corner-br-lg) img {
+    display:    block      !important;
+    position:   static     !important;
+    order:      2          !important;
+    width:      auto       !important; /* ◄── CORRECTION : auto au lieu de 10vw */
+    height:     auto       !important; /* ◄── CORRECTION : auto au lieu de 10vh */
+    max-width:  28vw       !important; /* ◄── Augmenté pour être vraiment plus grande */
+    max-height: 25vh       !important; /* ◄── Augmenté pour être vraiment plus grande */
+    margin:     0 auto     !important;
+    transform:  none       !important;
+  }
+
+  /* La légende (figcaption) */
+  .reveal .slides section figure:has(img.corner-br) figcaption,
+  .reveal .slides section figure:has(img.corner-br-lg) figcaption {
+    position:      static      !important;
+    order:         1           !important; 
+    display:       block       !important;
+    text-align:    center      !important;
+    width:         100%        !important;
+    margin-top:    0           !important;
+    margin-bottom: 4px         !important;
+    font-size:     0.55em      !important;
+    opacity:       0.85        !important;
+  }
+}
+
+/* ── 2. COMPORTEMENT À L'IMPRESSION (Export PDF) ── */
+.print-pdf .reveal section figure:has(img.corner-br),
+.print-pdf .reveal section figure:has(img.corner-br-lg) {
+  position:       absolute   !important; 
+  bottom:         0          !important;
+  right:          0          !important;
+  display:        flex       !important;
+  flex-direction: column     !important;
+  align-items:    center     !important;
+  width:          max-content!important;
+  transform:      none       !important;
+}
+
+/* Alignement des tailles pour le rendu PDF */
+.print-pdf .reveal section figure:has(img.corner-br) img {
+  width:      auto       !important;
+  height:     auto       !important;
+  max-width:  18vw       !important;
+  max-height: 16vh       !important;
+  margin:     0 auto     !important;
+}
+
+.print-pdf .reveal section figure:has(img.corner-br-lg) img {
+  width:      auto       !important;
+  height:     auto       !important;
+  max-width:  28vw       !important;
+  max-height: 25vh       !important;
+  margin:     0 auto     !important;
+}
+
+
+.reveal .slides section img.fullslide {
+  display:    block  !important;
+  position:   static !important;
+  width:      100%   !important;
+  height:     calc(100vh - 1em) !important;
+  max-width:  none   !important;
+  max-height: none   !important;
+  object-fit: contain;
+  margin:     0      !important;
+  object-position: center top;
+}
+
+.reveal .slides section figure:has(img.fullslide) {
+  display:    block  !important;
+  position:   static !important;
+  width:      100%   !important;
+  height:     calc(100vh - 3em) !important;
+  max-width:  none   !important;
+  max-height: none   !important;
+  margin:     0      !important;
+  padding:    0      !important;
+}
+
+.reveal .slides section figure:has(img.fullslide) figcaption {
+  display: none;
+}
+
+
+/* ============================================================
+   Images côte à côte pleine slide
+   ============================================================ */
+.reveal .slides section .img-duo {
+  display:        flex        !important;
+  flex-direction: row         !important;
+  flex-wrap:      nowrap      !important;
+  gap:            1%          !important;
+  width:          100%        !important;
+  height:         calc(100vh - var(--slide-title-height)) !important;
+  margin:         0           !important;
+  padding:        0           !important;
+  align-items:    stretch     !important;
+}
+
+/* cas où Quarto génère <figure> */
+.reveal .slides section .img-duo figure {
+  flex:       1 1 0   !important;
+  display:    flex    !important;
+  position:   static  !important;
+  width:      0       !important;
+  height:     100%    !important;
+  max-width:  none    !important;
+  max-height: none    !important;
+  margin:     0       !important;
+  padding:    0       !important;
+  overflow:   hidden  !important;
+}
+
+.reveal .slides section .img-duo figure img {
+  display:         block   !important;
+  position:        static  !important;
+  width:           100%    !important;
+  height:          100%    !important;
+  max-width:       none    !important;
+  max-height:      none    !important;
+  object-fit:      contain !important;
+  object-position: center  !important;
+  margin:          0       !important;
+}
+
+/* cas réel : Quarto génère <p> contenant les deux <img> */
+.reveal .slides section .img-duo > p {
+  display:        flex        !important;
+  flex-direction: row         !important;
+  flex-wrap:      nowrap      !important;
+  gap:            1%          !important;
+  width:          100%        !important;
+  height:         100%        !important;
+  margin:         0           !important;
+  padding:        0           !important;
+  align-items:    stretch     !important;
+}
+
+.reveal .slides section .img-duo > p > img {
+  flex:            1 1 0      !important;
+  display:         block      !important;
+  position:        static     !important;
+  width:           0          !important;
+  height:          100%       !important;
+  max-width:       none       !important;
+  max-height:      none       !important;
+  object-fit:      contain    !important;
+  object-position: center     !important;
+  margin:          0          !important;
+}
+
+.reveal .slides section .img-duo figure figcaption {
+  display: none;
+}
+
+
+/* ============================================================
+   Blockquote
+   ============================================================ */
+.reveal blockquote {
+  border-left:  solid 5px lightgray;
+  padding-left: 1em;
+}
+
+/* ============================================================
+   4) Footnotes
+   ============================================================ */
+.reveal .footnote,
+.reveal .footnotes {
+  position:      absolute;
+  bottom:        1em;
+  left:          0;
+  right:         0;
+  padding-left:  var(--slide-pad-left);
+  padding-right: 4em;
+  font-size:     var(--footnote-font-size);
+  max-height:    30%;
+  overflow:      auto;
+}
+
+/* ============================================================
+   5) Inverse slides
+   ============================================================ */
+.reveal .slides section.inverse,
+.reveal .slides section.stack > section.inverse {
+  background-color: #ffebf0;
+  color:            var(--scpo-dark);
+}
+.reveal .slides section.inverse h1,
+.reveal .slides section.inverse h2,
+.reveal .slides section.inverse h3 {
+  color:       var(--scpo-blue);
+  line-height: 1.1;
+}
+.reveal .slides section.inverse pre,
+.reveal .slides section.inverse code {
+  background-color: #e0e1df;
+}
+
+/* ============================================================
+   6) Columns
+   ============================================================ */
+.reveal .left-column  { color: #777; width: 25%; height: 92%; float: left; }
+.reveal .right-column { width: 70%; float: right; padding-top: 1em; }
+.reveal .pull-left    { float: left;  width: 48%; }
+.reveal .pull-right   { float: right; width: 48%; }
+.reveal .pull-right ~ * { clear: both; }
+.reveal .clearfix::after { content: ""; display: table; clear: both; }
+
+.reveal .columns { display: flex; gap: 2%; align-items: flex-start; }
+.reveal .columns > .col { flex: 1 1 0; }
+
+.reveal .columns.cols-40-60 > .col:first-child { flex: 0 0 40%; }
+.reveal .columns.cols-40-60 > .col:last-child  { flex: 0 0 58%; }
+
+.reveal .columns.cols-30-70 > .col:first-child { flex: 0 0 30%; }
+.reveal .columns.cols-30-70 > .col:last-child  { flex: 0 0 68%; }
+
+/* FIX: last-child corrige de 75% -> 63% */
+.reveal .columns.cols-35-65 > .col:first-child { flex: 0 0 35%; }
+.reveal .columns.cols-35-65 > .col:last-child  { flex: 0 0 63%; }
+
+/* ============================================================
+   7) TITLE SLIDE
+   ============================================================ */
+.reveal .slides section#title-slide {
+  background-color: #fff !important;
+  padding-left:     0   !important;
+  text-align:       left !important;
+}
+
+/* Logo haut-gauche
+   → Modifier --title-logo-margin-left et --title-logo-height dans :root */
+.reveal .slides section#title-slide::before {
+  content:             "";
+  display:             block;
+  background-image:    var(--title-logo-url);
+  background-repeat:   no-repeat;
+  background-position: left top;
+  background-size:     contain;
+  height:              var(--title-logo-height);
+  margin:              0 0 0 var(--title-logo-margin-left);
+  pointer-events:      none;
+}
+
+.reveal .slides section#title-slide .quarto-title-block {
+  display:      block  !important;
+  margin:       0      !important;
+  padding-left: 100px  !important;
+  width:        100%;
+}
+
+.reveal .slides section#title-slide .title {
+  font-size:   60px;
+  font-weight: normal;
+  color:       var(--scpo-grey);
+  margin:      0;
+  line-height: 1.1;
+}
+
+.reveal .slides section#title-slide .subtitle {
+  font-size: 50px;
+  color:     var(--scpo-red);
+  margin:    0 0 16px 0;
+}
+
+.reveal .slides section#title-slide .quarto-title-authors,
+.reveal .slides section#title-slide .quarto-title-author {
+  display: block;
+  float:   none;
+  margin:  0;
+}
+
+.reveal .quarto-title-block .quarto-title-authors .quarto-title-author {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+
+
+.reveal .slides section#title-slide .quarto-title-author-name,
+.reveal .slides section#title-slide .quarto-title-affiliation,
+.reveal .slides section#title-slide .date {
+  font-size:   40px;
+  color:       #666;
+  margin:      0;
+  line-height: 1.15;
+}
+
+
+.reveal .slides section#title-slide .date { margin-top: 12px; }
+
+.reveal .slides section#title-slide .slide-number { display: none !important; }
+
+/* ============================================================
+   Footer (logo bas)
+   Injecte via le YAML :
+     footer: |
+       <div class="my-footer"><img src="assets/logos/ScPo-shield.png" style="height:60px;"/></div>
+
+   Pour changer la position, modifiez les variables dans :root :
+     Centre        -> --footer-left: 50%;   --footer-transform: translateX(-50%);
+     Gauche        -> --footer-left: 20px;  --footer-transform: none;
+     Droite        -> --footer-left: auto;  et ajoutez right: 20px manuellement ici
+   ============================================================ */
+.reveal .my-footer {
+  position:  fixed;
+  bottom:    var(--footer-bottom);
+  left:      var(--footer-left);
+  transform: var(--footer-transform);
+  z-index:   10;
+}
+
+/* ============================================================
+   8) Section dividers (centered)
+   ============================================================ */
+.reveal .slides section.title-slide-section-red,
+.reveal .slides section.title-slide-section-grey {
+  display:         flex   !important;
+  flex-direction:  column !important;
+  justify-content: center !important;   /* vertical */
+  align-items:     center !important;   /* horizontal */
+  text-align:      center !important;
+  height:          100%   !important;
+  top:             0      !important;
+  padding:         0      !important;
+}
+.reveal .slides section.title-slide-section-red  { background-color: var(--scpo-red)  !important; }
+.reveal .slides section.title-slide-section-grey { background-color: var(--scpo-grey) !important; }
+
+.reveal .slides section.title-slide-section-red h1,
+.reveal .slides section.title-slide-section-red h2,
+.reveal .slides section.title-slide-section-red h3,
+.reveal .slides section.title-slide-section-red p,
+.reveal .slides section.title-slide-section-grey h1,
+.reveal .slides section.title-slide-section-grey h2,
+.reveal .slides section.title-slide-section-grey h3,
+.reveal .slides section.title-slide-section-grey p {
+  color:      #fff;
+  text-align: center;
+  width:      100%;
+}
+.reveal .slides section.title-slide-section-red a { color: var(--scpo-grey); }
+
+/* PDF export: % heights collapse in print, so use viewport units */
+.print-pdf .reveal .slides section.title-slide-section-red,
+.print-pdf .reveal .slides section.title-slide-section-grey {
+  height: 100vh !important;
+  width:  100vw !important;
+}
+
+/* ============================================================
+   Section titles (# Heading) : centered
+   ============================================================ */
+.reveal .slides section.title-slide.level1:not(#title-slide) {
+  text-align:   center !important;
+  padding-left: 0      !important;
+}
+.reveal .slides section.title-slide.level1:not(#title-slide) h1 {
+  text-align:   center !important;
+  width:        100%;
+  margin-left:  0;
+  margin-right: 0;
+}
+
+/* ============================================================
+   Helpers / couleurs
+   ============================================================ */
+.reveal strong,
+.reveal .ScPored   { color: var(--scpo-red); }
+.reveal .blue      { color: #0000CC; font-weight: bold; }
+.reveal .grey      { color: var(--scpo-grey); }
+.reveal .lightgrey { color: var(--scpo-lightgrey); }
+.reveal .black     { color: #000; font-weight: bold; }
+.reveal .white     { color: #fff; }
+.reveal .forestgreen { color: var(--forestgreen); }
+
+/* ============================================================
+   Callouts (Quarto)
+   .callout-question gere uniquement dans callout.scss
+   ============================================================ */
+.reveal .callout {
+  border-radius: 14px;
+  padding:       0.9em 1.1em;
+  margin-top:    0.8em;
+}
+
+.reveal .callout .callout-title {
+  font-size:      calc(var(--slide-font-size) * 0.95);
+  font-weight:    600;
+  letter-spacing: -0.02em;
+}
+
+.reveal .callout .callout-body {
+  font-size:   calc(var(--slide-font-size) * 0.9);
+  line-height: 1.25;
+}
+
+.reveal .callout-note    { border-left: 6px solid #4C78A8; }
+.reveal .callout-tip     { border-left: 6px solid #54A24B; }
+.reveal .callout-success { border-left: 6px solid #2E7D32; }
+.reveal .callout-warning { border-left: 6px solid #E45756; }
+/* .callout-question -> voir callout.scss */
+
+/* ============================================================
+   Tables
+   ============================================================ */
+.reveal .small-reg   table { font-size: 0.85em; }
+.reveal .smaller-reg table { font-size: 0.75em; }
+
+.reveal .scale-75 table {
+  transform:        scale(0.75);
+  transform-origin: top left;
+}
+.reveal .scale-50 table {
+  transform:        scale(0.5);
+  transform-origin: top left;
+}
+
+.reveal .no-lines tr.odd td,
+.reveal .no-lines tr.even td,
+.reveal .no-lines tr.odd th,
+.reveal .no-lines tr.even th {
+  border: none !important;
+}
+
+.reveal .fine-lines table tr.odd,
+.reveal .fine-lines table tr.even {
+  border-top: none !important;
+  border-bottom: none !important;
+}
+
+.reveal .fine-lines table tr {
+  border-top: none !important;
+  border-bottom: none !important;
+}
+
+.reveal .fine-lines table td,
+.reveal .fine-lines table th {
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: 1px solid #ccc !important;
+}
+
+.reveal .fine-lines table th {
+  border-bottom: 2px solid #333 !important;
+}
+
+/* ============================================================
+   Standout slides
+   ============================================================ */
+.reveal section.standout {
+  display:     grid !important;
+  place-items: center;
+  text-align:  center;
+}
+
+@page { margin: 0; }
+
+/* ============================================================
+   Standout slides — variante rouge (ScPo)
+   ============================================================ */
+.reveal .slides section.standout-red {
+  background-color: var(--scpo-red) !important;
+  display:          flex            !important;
+  flex-direction:   column          !important;
+  justify-content:  center          !important;
+  align-items:      center          !important;
+  text-align:       center          !important;
+  min-height:       100%            !important;
+  width:            100%            !important;
+  top:              0               !important;
+  left:             0               !important;
+  bottom:           0               !important;
+  right:            0               !important;
+  padding:          0               !important;
+  margin:           0               !important;
+  font-size: 1.25em !important;
+}
+
+.reveal .slides section.standout-red h1,
+.reveal .slides section.standout-red h2,
+.reveal .slides section.standout-red h3,
+.reveal .slides section.standout-red p,
+.reveal .slides section.standout-red li {
+  color:      #fff    !important;
+  text-align: center  !important;
+  width:      100%    !important;
+}
+
+.reveal .slides section.standout-red a {
+  color:           rgba(255, 255, 255, 0.75);
+  text-decoration: underline;
+}
+
+
+.print-pdf .reveal .slides section.standout-red {
+    display:         flex          !important;
+    flex-direction:  column        !important;
+    justify-content: center        !important;
+    align-items:     center        !important;
+    text-align:      center        !important;
+    /* Use explicit dimensions instead of % — % collapses in print layout */
+    height:          100vh         !important;
+    width:           100vw         !important;
+    min-height:      unset         !important;
+    box-sizing:      border-box    !important;
+  }
+
+
+/* ============================================================
+   Incremental : fade-out général
+   ============================================================ */
+.reveal .slides section ol > li.fragment.visible:not(.current-fragment) {
+  opacity:    0.25    !important;
+  visibility: inherit !important;
+}
+
+/* ============================================================
+   Navigation buttons  ([label](#anchor){.button})
+   Used to jump to an appendix slide and back again.
+   ============================================================ */
+.reveal .slides section a.button,
+.reveal .slides section a.button:visited {
+  display:          inline-block;
+  padding:          0.18em 0.7em;
+  margin:           0.25em 0.4em 0.25em 0;
+  border:           2px solid var(--scpo-red);
+  border-radius:    0.3em;
+  background-color: transparent;
+  color:            var(--scpo-red);
+  font-size:        0.62em;
+  font-weight:      600;
+  line-height:      1.5;
+  text-decoration:  none;
+  transition:       background-color 0.15s ease, color 0.15s ease;
+}
+
+.reveal .slides section a.button::after { content: "  \203A"; }
+
+.reveal .slides section a.button:hover,
+.reveal .slides section a.button:focus {
+  background-color: var(--scpo-red);
+  color:            #fff;
+}
+
+/* On the red standout slides the outline has to invert to stay visible. */
+.reveal .slides section.standout-red a.button,
+.reveal .slides section.standout-red a.button:visited {
+  border-color: rgba(255, 255, 255, 0.85);
+  color:        #fff;
+}
+.reveal .slides section.standout-red a.button:hover {
+  background-color: #fff;
+  color:            var(--scpo-red);
+}
+
+/* Buttons that send the audience BACK sit quietly, in grey. */
+.reveal .slides section a.button.back,
+.reveal .slides section a.button.back:visited {
+  border-color: var(--scpo-lightgrey);
+  color:        var(--scpo-grey);
+}
+.reveal .slides section a.button.back:hover {
+  background-color: var(--scpo-grey);
+  color:            #fff;
+}
+
+/* Print: a button is dead paper, so make it read as a plain cross-reference. */
+.print-pdf .reveal .slides section a.button::after { content: ""; }

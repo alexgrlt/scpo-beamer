@@ -1,0 +1,46 @@
+/* ============================================================
+   ScPo — Fonts
+   FIX: API Google Fonts modernisée (css2 + display=swap)
+        Une seule requête HTTP au lieu de 4.
+        Source Code Pro retiré (importé mais jamais utilisé).
+   ============================================================ */
+@import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&family=Yanone+Kaffeesatz:wght@300;400;700&family=Droid+Serif:ital,wght@0,400;0,700;1,400&display=swap");
+
+/* Corps de texte */
+.reveal {
+  font-family: "Droid Serif", "Palatino Linotype", "Book Antiqua", Palatino,
+               "Microsoft YaHei", "Songti SC", serif;
+}
+
+/* Titres */
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+  font-family: "Yanone Kaffeesatz", sans-serif;
+  font-weight: normal;
+}
+
+/* Blocs de code */
+.reveal pre,
+.reveal code {
+  font-family: "Inconsolata", monospace;
+  color: #515151;
+}
+
+/* Code inline (hors pre) */
+.reveal :not(pre) > code {
+  font-family:      "Inconsolata", monospace;
+  color:            #515151;
+  background-color: rgba(217, 5, 2, 0.2);
+  border-radius:    5px;
+  padding:          0 2px 1px 2px;
+  white-space:      nowrap;
+}
+
+/* Lignes surlignées dans les blocs de code (Quarto + reveal) */
+.reveal pre code .highlight-line,
+.reveal pre code span.highlight-line,
+.reveal pre code .hljs-ln-line.highlighted {
+  background-color: #ffff88;
+  display:          block;
+}

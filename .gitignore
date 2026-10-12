@@ -1,0 +1,6 @@
+# Rendered output
+*.html
+!header.html
+*_files/
+*_cache/
+.quarto/
